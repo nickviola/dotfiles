@@ -1,25 +1,28 @@
-syntax on                       " turns syntax highlighting on
-"colorscheme default             " defines the color scheme of the syntax highlighting
-
-set mouse=a                     "enable mouse control in all modes
+set t_Co=256
+colorscheme delek
+"set spell
+syntax enable
+set encoding=utf-8
+"set laststatus=2
+set mouse=a
 set mousefocus
 set ttymouse=sgr
-set	spell
 set sps=best
-set backspace=2                 " make backspace work like most other apps
+set nohidden
+set backspace=1                 " make backspace work like most other apps
 set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
 set expandtab                   " expand tabs to spaces
-"set cursorline                  " show a visual line under the cursor's current line
+set cursorline                  " show a visual line under the cursor's current line
 set nocompatible                " (cp) use Vim defaults (much better)
 set ruler                       " (ru) show the cursor position at all times
 set showcmd                     " (sc) display an incomplete command in the lower right
-set history=200                 " (hi) keep x num lines of command history
+set history=500                 " (hi) keep x num lines of command history
 set number                      " (nu) show line numbers
 set showmatch                   " (sm) briefly jump to matching bracket when inserting one
 set autoindent                  " (ai) turn on auto-indenting
 set copyindent                  " (ci) when auto-indenting, use the indenting format of the previous line
-set tabstop=4                   " (ts) width (in spaces) that a <tab> is displayed as
-set shiftwidth=4                " (sw) width (in spaces) used in each step of autoindent (aswell as << and >>)
+set tabstop=2                   " (ts) width (in spaces) that a <tab> is displayed as
+set shiftwidth=2                " (sw) width (in spaces) used in each step of autoindent (aswell as << and >>)
 set smarttab                    " (sta) 'shiftwidth' used in front of a line, but 'tabstop' used otherwise
 set textwidth=80                " (tw) number of columns before an automatic line break is inserted (see formatoptions)
 set formatoptions=croq          " (fo) influences how vim automatically formats text
@@ -42,31 +45,39 @@ set ignorecase                  " (ic) ignores case in search patterns
 set smartcase                   " (scs) don't ignore case when the search pattern has uppercase
 set infercase                   " (inf) during keyword completion, fix case of new word (when ignore case is on)
 
-"set foldcolumn=6                " (fdc) width of fold column (to see where folds are)
+"set foldcolumn=3                " (fdc) width of fold column (to see where folds are)
 "set foldmethod=syntax           " (fdm) creates a fold for every level of indentation
 "set foldlevel=99                " (fdl) when file is opened, don't close any folds
 "set foldenable                  " (fen) enables or disables folding
+set clipboard=unnamed
 
 let html_use_css = 1            " the ':%TOhtml' command generates html without <font> tags
 let g:javascript_plugin_flow = 1
-let g:jsx_ext_required = 0
 
 
 
 " File Specific Settings
 " ------------------------------------------------------------
 
+" augroup ts_ft
+"   au!
+"   autocmd BufNewFile,BufRead *.ts,*.tsx set syntax=typescript
+" augroup END
+
 au FileType py setlocal expandtab
+au FileType ts,tsx setfiletype=typescript
+au FileType ts,tsx syntax=typescript
 
-au FileType xhtml,html,htm,php,xml,yaml,yml,js setlocal tabstop=2
-au FileType xhtml,html,htm,php,xml,yaml,yml,js setlocal shiftwidth=2
-au FileType xhtml,html,htm,php,xml,yaml,yml,js setlocal expandtab      " (et) expand tabs to spaces (use :retab to redo entire file)
-au FileType xhtml,html,htm,php,xml.yaml,yml,js setlocal softtabstop=2   " (sts) makes spaces feel like tabs (like deleting)
 
-au FileType c,h,java,js setlocal mps+==:;                   " allow the match pairs operation (%) to work with '=' and ';'
+au FileType xhtml,html,htm,php,xml,yaml,yml,js,ts,tsx setlocal tabstop=2
+au FileType xhtml,html,htm,php,xml,yaml,yml,js,ts,tsx setlocal shiftwidth=2
+au FileType xhtml,html,htm,php,xml,yaml,yml,js,ts,tsx setlocal expandtab      " (et) expand tabs to spaces (use :retab to redo entire file)
+au FileType xhtml,html,htm,php,xml.yaml,yml,js,ts,tsx setlocal softtabstop=2   " (sts) makes spaces feel like tabs (like deleting)
+
+au FileType c,h,java,js,jsx,ts,tsx setlocal mps+==:;                   " allow the match pairs operation (%) to work with '=' and ';'
 
 au FileType c,h setlocal cindent                            " enable the intelligent cindent (cin) feature for the following files
-au FileType java,js setlocal smartindent                    " enable the smartindenting (si) feature for the following files
+au FileType python,py,java,js,jsx,ts,tsx,yaml,yml setlocal smartindent                    " enable the smartindenting (si) feature for the following files
 
 au FileType txt setlocal fo+=tn
 
@@ -100,22 +111,26 @@ au FileType txt setlocal fo+=tn
 
 " (dict) dictionary used for keyword completion
 " to use: while in insertion mode and in the middle of a word, type <ctrl-n> and <ctrl-p>
-set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+"set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
 " set complete-=k complete+=k
-set completeopt=longest,menuone " Don't select first Omni-completion option
+" set completeopt=longest" Don't select first Omni-completion option
 
 
 " Old stuff
 " ---------------------------------------------------------------
-" set wildmenu
-set wildmode=longest,list,full
+set wildmenu
+" set wildmode=full:list:hh=SuperTab('n')
+set wildmode=full
+
+set undodir=~/.vim/undo   " where to save undo histories
 set undofile                  " Save undo's after file closes
-set undodir=$HOME/.vim/undo   " where to save undo histories
-set undolevels=300           " How many undos
-set undoreload=1000          " number of lines to save for undo
+set undolevels=1000           " How many undos
+set undoreload=10000          " number of lines to save for undo
 let python_highlight_all=1    " enable all Python syntax highlighting features
-set clipboard=unnamed         " linking system clipboard
 let g:jsx_ext_required=0      " Js to indent like jsx
+let g:tsx_ext_required=0      " Js to indent like jsx
+let typescript_highlight_all=1
+let javascript_highlight_all=1
 
 
 
@@ -229,37 +244,37 @@ endfunction
 
 " :retab                - when expandtab is set, replace all tabs in the file with the # of spaces defined in 'shiftwidth'
 " :retab!               - when expandtab is not set, replace the number of spaces in 'shiftwidth' with a tab
-if has("cscope")
-    set csprg=/usr/bin/cscope
-    set csto=0
-    set cst
-    set nocsverb
-    " add any database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out
-    " else add database pointed to by environment
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-    set csverb
-
-    "   's'   symbol: find all references to the token under cursor
-    "   'g'   global: find global definition(s) of the token under cursor
-    "   'c'   calls:  find all calls to the function name under cursor
-    "   't'   text:   find all instances of the text under cursor
-    "   'e'   egrep:  egrep search for the word under cursor
-    "   'f'   file:   open the filename under cursor
-    "   'i'   includes: find files that include the filename under cursor
-    "   'd'   called: find functions that function under cursor calls
-    nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-endif
+" if has("cscope")
+"     set csprg=/usr/bin/cscope
+"     set csto=0
+"     set cst
+"     set nocsverb
+"     " add any database in current directory
+"     if filereadable("cscope.out")
+"         cs add cscope.out
+"     " else add database pointed to by environment
+"     elseif $CSCOPE_DB !=
+"         cs add $CSCOPE_DB
+"     endif
+"     set csverb
+" 
+"     "   's'   symbol: find all references to the token under cursor
+"     "   'g'   global: find global definition(s) of the token under cursor
+"     "   'c'   calls:  find all calls to the function name under cursor
+"     "   't'   text:   find all instances of the text under cursor
+"     "   'e'   egrep:  egrep search for the word under cursor
+"     "   'f'   file:   open the filename under cursor
+"     "   'i'   includes: find files that include the filename under cursor
+"     "   'd'   called: find functions that function under cursor calls
+"     nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+"     nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+"     nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+"     nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+"     nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+"     nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+"     nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"     nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+" endif
 
 
 
@@ -267,23 +282,49 @@ endif
 " ------------------------------------------------------------
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
+let &runtimepath.=',~/.vim/bundle'
 call vundle#begin()
+call vundle#rc()
 
-" let Vundle manage Vundle, required
+
+"let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'w0rp/ale'
+Plugin 'mxw/vim-jsx'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdTree'
 Plugin 'tpope/vim-fugitive'
+Plugin 'sjl/gundo.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rizzatti/dash.vim'
 Plugin 'szw/vim-g.git'
 Plugin 'pangloss/vim-javascript'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'mxw/vim-jsx'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'roxma/nvim-yarp'
+" Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'leafgarland/typescript-vim'
+Plugin 'Quramy/vim-js-pretty-template'
+Plugin 'jason0x43/vim-js-indent'
+Plugin 'Quramy/vim-dtsm'
+Plugin 'mhartington/vim-typings'
+Plugin 'HerringtonDarkholme/yats.vim'
+Plugin 'Shougo/vimproc.vim'
+
+let g:deoplete#enable_at_startup = 1
+
+" ALE Linter
+let g:ale_enabled=1
+let g:ale_sign_column_always=1
+let g:ale_javascript_eslint_use_global=1
+let g:ale_typescript_tslint_use_global=1
+let g:ale_linters={'javascript': ['eslint', 'prettier-eslint', 'standard'], 'python': ['pylint', 'flake8'], 'typescript': ['tslint']}
+"let g:ale_fixers={'javascript': ['eslint', 'prettier-eslint', 'standard'], 'python': ['pylint', 'flake8'], 'typescript': ['tslint']}
+"let g:ale_fixers={'javascript': ['DoSomething', 'eslint', {buffer, lines -> filter(lines, 'v:val !=~ ''^\s*//''')}]}
+let g:ale_fixers={'ts': ['tslint', 'save_file']}
 
 """ Moving Around/Editing
 "autocmd VimEnter * Tagbar
@@ -293,6 +334,7 @@ autocmd VimEnter * NERDTree
 
 " Move to next window (right) from NerdTree
 autocmd VimEnter * wincmd l
+
 
 let g:NERDTreeMapOpenInTab='<2-LeftMouse>'
 
@@ -318,54 +360,64 @@ function! NERDTreeQuit()
     quitall
   endif
 endfunction
+
 autocmd WinEnter * call NERDTreeQuit()
 
 " Pathogen load
 call pathogen#infect()
 call pathogen#helptags()
 
-" Airline plugin"
-" Enable the list of buffers
-" let g:airline#extensions#tabline#enabled=1
-" let g:airline#extensions#tabline#fnamemod=':t'
-" let g:airline#extensions#tabline#left_sep = ' '
-" let g:airline#extensions#tabline#left_alt_sep = '|'
-" let g:airline#extensions#tabline#formatter = 'default'
-" let g:airline_theme='kolor'
-
 let g:airline_powerline_fonts = 1
 
+" Airline plugin"
+" Enable the list of buffers
+"
+let g:airline#extensions#tabline#enabled = 1
+"let g:airline_detect_spell=1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline#extensions#tabline#fnamemod=':t'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#branch#enabled = 1
+let g:airline_detect_modified = 1
+"let g:airline#extensions#branch#empty_message = 'NOT IN REPO'
+let g:airline#extensions#branch#use_vcscommand = 1
+let g:airline#extensions#tabline#keymap_ignored_filetypes = ['vimfiler', 'nerdtree']
+
+"let g:airline_theme='kolor'
+"let g:airline_theme='violet'
+"let g:airline_theme='biogoo'
+"let g:airline_theme='behelit'
+
+let g:airline_theme_patch_func = 'AirlineThemePatch'
+function! AirlineThemePatch(palette)
+  if g:airline_theme == 'behelit'
+    for colors in values(a:palette.inactive)
+      let colors[3] = 245
+    endfor
+  endif
+endfunction
+
+let g:airline_symbols_ascii = 1  
+
 if !exists('g:airline_symbols')
- let g:airline_symbols = {}
+  let g:airline_symbols = {}
 endif
 
 let g:airline_symbols.space = "\ua0"
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline_theme = 'solarized'
-
-
-" ALE Linter
-let &runtimepath.=',~/.vim/bundle/ale'
-let g:ale_enabled=1
-let g:ale_sign_column_always=1
-
-let g:ale_linters = {'jsx': ['stylelint', 'eslint']}
-let g:ale_linters = {'ts': ['stylelint', 'eslint']}
-let g:ale_linter_aliases = {'jsx': 'css'}
-
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-" let g:ale_fixers={'javascript': ['eslint'], 'python': ['pylint', 'flake8']}
-" let g:ale_fixers={'javascript': ['eslint'],}
+let g:airline#extensions#tabline#show_buffers = 1
+"let g:airline_theme = 'solarized'
 
 
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion=1
-" let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-" let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py"
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+let g:ycm_global_ycm_extra_conf = "~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py"
 
-nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+noremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-call vundle#end()            " required
+"let g:yats_host_keyword = 1
+
+call vundle#end()
