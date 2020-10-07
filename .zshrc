@@ -2,6 +2,7 @@
 ZSH=~/.oh-my-zsh
 
 ZSH_THEME="tonotdo"
+#ZSH_THEME="tonotdo"
 #ZSH_THEME="af-magic"
 
 plugins=(
