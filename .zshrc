@@ -1,7 +1,8 @@
 #### OH-MY-ZSH Stuff
 ZSH=~/.oh-my-zsh
-
 ZSH_THEME="tonotdo"
+
+## Past Themes
 #ZSH_THEME="tonotdo"
 #ZSH_THEME="af-magic"
 
@@ -79,7 +80,7 @@ source ~/CloudStorage/dev/source_files/aws-env
 source /usr/local/bin/aws_zsh_completer.sh
 
 #### Heroku Autocomplete
-export HEROKU_AC_ZSH_SETUP_PATH="/Users/nickviola/Library/Caches/heroku/autocomplete/zsh_setup";
+export HEROKU_AC_ZSH_SETUP_PATH="~/Library/Caches/heroku/autocomplete/zsh_setup";
 # test -f $HEROKU_AC_ZSH_SETUP_PATH;
 source $HEROKU_AC_ZSH_SETUP_PATH;
 
@@ -109,7 +110,7 @@ pyenv virtualenvwrapper_lazy &> /dev/null
 export PATH="$(pyenv root)/shims:$PATH"
 
 #### Ruby rbenv Setup
-#test -e "/Users/nickviola/.iterm2_shell_integration.zsh" && source #"$#{HOME}/.iterm2_shell_integration.zsh"
+#test -e "~/.iterm2_shell_integration.zsh" && source #"$#{HOME}/.iterm2_shell_integration.zsh"
 eval "$(rbenv init -)" &> /dev/null
 export PATH="$(rbenv root)/shims:$PATH"
 
@@ -129,5 +130,3 @@ export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 #eval $(docker-machine env default)
 export PATH="/usr/local/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/ruby/lib"                                                                                                                                                      nickviola@nicks-macbook
-export CPPFLAGS="-I/usr/local/opt/ruby/include"
